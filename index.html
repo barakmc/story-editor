@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>עורך סיפורים | AI</title>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0f12;
+    --surface: #141720;
+    --surface2: #1c2030;
+    --surface3: #242840;
+    --border: #2a2f45;
+    --border2: #353b55;
+    --accent: #00d4aa;
+    --accent2: #0099ff;
+    --accent-dim: rgba(0, 212, 170, 0.12);
+    --accent-dim2: rgba(0, 153, 255, 0.1);
+    --text: #e8eaf0;
+    --text2: #8892aa;
+    --text3: #545e78;
+    --danger: #ff4d6d;
+    --warning: #ffaa00;
+    --success: #00d4aa;
+    --mono: 'JetBrains Mono', monospace;
+    --sans: 'Heebo', sans-serif;
+    --radius: 8px;
+    --radius2: 12px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 15px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  /* ── HEADER ── */
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 24px;
+    height: 56px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+    position: relative;
+    z-index: 10;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--accent);
+    letter-spacing: 0.05em;
+  }
+
+  .logo-dot {
+    width: 8px; height: 8px;
+    background: var(--accent);
+    border-radius: 50%;
+    box-shadow: 0 0 8px var(--accent);
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; box-shadow: 0 0 8px var(--accent); }
+    50% { opacity: 0.5; box-shadow: 0 0 2px var(--accent); }
+  }
+
+  .header-actions { display: flex; align-items: center; gap: 8px; }
+
+  .btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 7px 14px;
+    font-family: var(--sans); font-size: 13px; font-weight: 500;
+    border: 1px solid var(--border2);
+    border-radius: var(--radius);
+    background: var(--surface2);
+    color: var(--text2);
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+  .btn:hover { background: var(--surface3); color: var(--text); border-color: var(--border2); }
+
+  .btn-accent {
+    background: var(--accent-dim);
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+  .btn-accent:hover { background: rgba(0,212,170,0.2); }
+
+  .btn-primary {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #0d0f12;
+    font-weight: 600;
+  }
+  .btn-primary:hover { background: #00f0c4; }
+  .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  .btn-sm { padding: 5px 10px; font-size: 12px; }
+  .btn-danger { border-color: var(--danger); color: var(--danger); background: rgba(255,77,109,0.08); }
+  .btn-danger:hover { background: rgba(255,77,109,0.18); }
+
+  /* ── LAYOUT ── */
+  .app-body {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+  }
+
+  /* ── SIDEBAR ── */
+  .sidebar {
+    width: 260px;
+    background: var(--surface);
+    border-left: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    overflow: hidden;
+  }
+
+  .sidebar-section {
+    padding: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .sidebar-title {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: var(--text3);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .versions-list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    overflow-y: auto;
+    flex: 1;
+    padding: 12px;
+  }
+
+  .version-item {
+    padding: 10px 12px;
+    border-radius: var(--radius);
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: all 0.15s;
+    position: relative;
+  }
+  .version-item:hover { background: var(--surface2); border-color: var(--border); }
+  .version-item.active { background: var(--accent-dim); border-color: var(--accent); }
+
+  .version-num {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--accent);
+    margin-bottom: 3px;
+  }
+  .version-item.active .version-num { color: var(--accent); }
+
+  .version-instruction {
+    font-size: 12px;
+    color: var(--text2);
+    line-height: 1.4;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+
+  .version-time {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text3);
+    margin-top: 4px;
+  }
+
+  .version-original {
+    background: rgba(0,153,255,0.08);
+    border-color: rgba(0,153,255,0.3) !important;
+  }
+  .version-original .version-num { color: var(--accent2); }
+
+  /* ── MAIN AREA ── */
+  .main-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: var(--bg);
+  }
+
+  /* ── SPLIT VIEW ── */
+  .editor-area {
+    flex: 1;
+    display: flex;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .editor-pane {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border-left: 1px solid var(--border);
+  }
+  .editor-pane:last-child { border-left: none; }
+
+  .pane-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 16px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    font-size: 12px;
+    color: var(--text2);
+    flex-shrink: 0;
+  }
+
+  .pane-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.05em;
+  }
+
+  .pane-label.current { color: var(--accent2); }
+  .pane-label.new { color: var(--accent); }
+
+  textarea {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.8;
+    padding: 24px;
+    resize: none;
+    direction: rtl;
+  }
+  textarea::placeholder { color: var(--text3); }
+
+  .readonly-text {
+    flex: 1;
+    overflow-y: auto;
+    padding: 24px;
+    font-size: 15px;
+    line-height: 1.8;
+    color: var(--text);
+    white-space: pre-wrap;
+    direction: rtl;
+  }
+
+  /* ── SINGLE VIEW ── */
+  .single-view .editor-pane:first-child { display: none; }
+
+  /* ── INSTRUCTION AREA ── */
+  .instruction-area {
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    padding: 16px 20px;
+    flex-shrink: 0;
+  }
+
+  .instruction-row {
+    display: flex;
+    gap: 10px;
+    align-items: flex-end;
+  }
+
+  .instruction-input-wrap {
+    flex: 1;
+    position: relative;
+  }
+
+  .instruction-input {
+    width: 100%;
+    background: var(--surface2);
+    border: 1px solid var(--border2);
+    border-radius: var(--radius);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 14px;
+    padding: 10px 14px;
+    direction: rtl;
+    outline: none;
+    resize: none;
+    min-height: 44px;
+    max-height: 120px;
+    line-height: 1.5;
+    transition: border-color 0.15s;
+  }
+  .instruction-input:focus { border-color: var(--accent); }
+  .instruction-input::placeholder { color: var(--text3); }
+
+  .presets-row {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+  }
+
+  .preset-chip {
+    padding: 4px 10px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    font-size: 12px;
+    color: var(--text2);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .preset-chip:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-dim); }
+
+  /* ── LOADING ── */
+  .loading-bar {
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2), var(--accent));
+    background-size: 200% 100%;
+    animation: shimmer 1.2s linear infinite;
+    display: none;
+  }
+  .loading-bar.active { display: block; }
+  @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+  /* ── MODAL ── */
+  .modal-overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.7);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 100;
+    backdrop-filter: blur(4px);
+  }
+  .modal {
+    background: var(--surface);
+    border: 1px solid var(--border2);
+    border-radius: var(--radius2);
+    padding: 28px;
+    width: 420px;
+    max-width: 90vw;
+  }
+  .modal h2 { font-size: 18px; margin-bottom: 6px; color: var(--text); }
+  .modal p { font-size: 13px; color: var(--text2); margin-bottom: 18px; line-height: 1.6; }
+
+  .modal input {
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--border2);
+    border-radius: var(--radius);
+    color: var(--text);
+    font-family: var(--mono);
+    font-size: 13px;
+    padding: 10px 12px;
+    outline: none;
+    direction: ltr;
+    margin-bottom: 14px;
+    transition: border-color 0.15s;
+  }
+  .modal input:focus { border-color: var(--accent); }
+
+  /* ── TOOLBAR ── */
+  .toolbar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+
+  .toolbar-sep {
+    width: 1px; height: 20px;
+    background: var(--border);
+    margin: 0 4px;
+  }
+
+  .view-toggle {
+    display: flex;
+    border: 1px solid var(--border2);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+  .view-btn {
+    padding: 6px 12px;
+    font-size: 12px;
+    color: var(--text2);
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    font-family: var(--sans);
+    transition: all 0.15s;
+  }
+  .view-btn.active { background: var(--surface3); color: var(--text); }
+  .view-btn:hover:not(.active) { color: var(--text); }
+
+  /* ── TOAST ── */
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: var(--surface2);
+    border: 1px solid var(--border2);
+    border-radius: var(--radius);
+    padding: 10px 18px;
+    font-size: 13px;
+    color: var(--text);
+    z-index: 200;
+    transition: transform 0.3s ease;
+    white-space: nowrap;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+  .toast.success { border-color: var(--accent); color: var(--accent); }
+  .toast.error { border-color: var(--danger); color: var(--danger); }
+
+  /* ── EMPTY STATE ── */
+  .empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    gap: 12px;
+    color: var(--text3);
+    padding: 40px;
+    text-align: center;
+  }
+  .empty-icon { font-size: 40px; opacity: 0.3; }
+  .empty-state h3 { font-size: 16px; color: var(--text2); }
+  .empty-state p { font-size: 13px; line-height: 1.6; }
+
+  /* ── UPLOAD ZONE ── */
+  .upload-zone {
+    border: 2px dashed var(--border2);
+    border-radius: var(--radius2);
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: var(--text3);
+    font-size: 13px;
+  }
+  .upload-zone:hover, .upload-zone.drag { border-color: var(--accent); color: var(--accent); background: var(--accent-dim); }
+
+  /* ── CHAR COUNT ── */
+  .char-count {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text3);
+  }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--text3); }
+
+  /* ── ANIMATIONS ── */
+  .fade-in { animation: fadeIn 0.3s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+
+  .spinner {
+    width: 16px; height: 16px;
+    border: 2px solid var(--border2);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    display: none;
+  }
+  .spinner.active { display: inline-block; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    .sidebar { display: none; }
+    .single-view .editor-pane:first-child { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- API KEY MODAL -->
+<div class="modal-overlay" id="apiModal">
+  <div class="modal">
+    <h2>🔑 הגדרת מפתח API</h2>
+    <p>הזן את מפתח ה-Gemini API שלך. המפתח נשמר באופן מקומי בדפדפן בלבד ולא נשלח לשום שרת.</p>
+    <input type="password" id="apiKeyInput" placeholder="AIza..." autocomplete="off" />
+    <div style="display:flex; gap:8px; justify-content:flex-end;">
+      <a href="https://aistudio.google.com/app/apikey" target="_blank" class="btn btn-sm">קבל מפתח חינמי ←</a>
+      <button class="btn btn-primary" onclick="saveApiKey()">שמור והתחל</button>
+    </div>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header>
+  <div class="logo">
+    <div class="logo-dot"></div>
+    <span>STORY_EDITOR</span>
+    <span style="color:var(--text3); font-size:11px;">v1.0</span>
+  </div>
+  <div class="header-actions">
+    <button class="btn btn-sm" onclick="exportDocx()" id="exportDocxBtn" style="display:none">
+      ⬇ ייצא Word
+    </button>
+    <button class="btn btn-sm" onclick="exportPdf()" id="exportPdfBtn" style="display:none">
+      ⬇ ייצא PDF
+    </button>
+    <button class="btn btn-sm btn-danger" onclick="clearApiKey()" title="שנה מפתח API">🔑</button>
+  </div>
+</header>
+
+<!-- LOADING BAR -->
+<div class="loading-bar" id="loadingBar"></div>
+
+<!-- APP BODY -->
+<div class="app-body">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-title">גרסאות</div>
+      <button class="btn btn-sm" style="width:100%; justify-content:center;" onclick="goBack()" id="backBtn" disabled>
+        ↩ חזור שלב אחורה
+      </button>
+    </div>
+    <div class="versions-list" id="versionsList">
+      <div style="color:var(--text3); font-size:12px; text-align:center; padding:20px;">
+        טרם נוצרו גרסאות
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main-area">
+
+    <!-- TOOLBAR -->
+    <div class="toolbar">
+      <label for="fileInput" class="btn btn-sm" style="cursor:pointer;">
+        📂 פתח קובץ
+      </label>
+      <input type="file" id="fileInput" accept=".txt,.md" style="display:none" onchange="loadFile(event)">
+
+      <div class="toolbar-sep"></div>
+
+      <div class="view-toggle">
+        <button class="view-btn active" id="splitViewBtn" onclick="setView('split')">מפוצל</button>
+        <button class="view-btn" id="singleViewBtn" onclick="setView('single')">יחיד</button>
+      </div>
+
+      <div class="toolbar-sep"></div>
+
+      <span class="char-count" id="charCount">—</span>
+    </div>
+
+    <!-- EDITOR AREA -->
+    <div class="editor-area" id="editorArea">
+
+      <!-- LEFT PANE: CURRENT -->
+      <div class="editor-pane" id="leftPane">
+        <div class="pane-header">
+          <span class="pane-label current">// גרסה נוכחית</span>
+          <div style="display:flex; gap:6px;">
+            <button class="btn btn-sm" onclick="adoptNew()" id="adoptBtn" style="display:none" title="קבל גרסה חדשה כגרסה הנוכחית">✓ קבל</button>
+          </div>
+        </div>
+        <div id="currentView">
+          <div class="empty-state">
+            <div class="empty-icon">📄</div>
+            <h3>אין טקסט</h3>
+            <p>פתח קובץ .txt או הדבק טקסט בחלון הימני</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT PANE: EDITABLE -->
+      <div class="editor-pane" id="rightPane">
+        <div class="pane-header">
+          <span class="pane-label new" id="rightPaneLabel">// טקסט פעיל</span>
+          <span class="char-count" id="rightCharCount"></span>
+        </div>
+        <textarea id="mainEditor" placeholder="הדבק כאן טקסט או פתח קובץ..." oninput="onEditorInput()"></textarea>
+      </div>
+
+    </div>
+
+    <!-- INSTRUCTION AREA -->
+    <div class="instruction-area">
+      <div class="instruction-row">
+        <div class="instruction-input-wrap">
+          <textarea
+            class="instruction-input"
+            id="instructionInput"
+            placeholder="כתוב הוראה... למשל: ״כתוב מחדש בסגנון רימון קרבר״ או ״חלק לפרקים עם כותרות״"
+            rows="1"
+            onkeydown="handleInstructionKey(event)"
+            oninput="autoResize(this)"
+          ></textarea>
+        </div>
+        <button class="btn btn-primary" id="runBtn" onclick="runInstruction()" disabled>
+          <div class="spinner" id="spinner"></div>
+          <span id="runBtnText">▶ הרץ</span>
+        </button>
+      </div>
+      <div class="presets-row" id="presetsRow">
+        <span style="font-size:11px; color:var(--text3); margin-left:4px;">מהיר:</span>
+        <div class="preset-chip" onclick="setPreset('כתוב מחדש בסגנון ספרותי מינימליסטי')">סגנון מינימליסטי</div>
+        <div class="preset-chip" onclick="setPreset('חלק את הטקסט לפרקים עם כותרות')">חלק לפרקים</div>
+        <div class="preset-chip" onclick="setPreset('קצר את הטקסט ב-30% תוך שמירה על הרוח')">קצר ב-30%</div>
+        <div class="preset-chip" onclick="setPreset('הוסף תיאורים חושניים ועשיר את הסצנות')">עשר תיאורים</div>
+        <div class="preset-chip" onclick="setPreset('שפר את הדיאלוגים לטבעיים יותר')">שפר דיאלוגים</div>
+        <div class="preset-chip" onclick="setPreset('כתוב מחדש בגוף ראשון')">גוף ראשון</div>
+        <div class="preset-chip" onclick="openCustomPreset()">+ הוסף</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ── STATE ──
+let apiKey = localStorage.getItem('gemini_api_key') || '';
+let versions = []; // { id, text, instruction, time }
+let currentVersionIndex = -1;
+let pendingNewText = '';
+let viewMode = 'split';
+let customPresets = JSON.parse(localStorage.getItem('custom_presets') || '[]');
+
+// ── INIT ──
+document.addEventListener('DOMContentLoaded', () => {
+  if (!apiKey) {
+    document.getElementById('apiModal').style.display = 'flex';
+  } else {
+    document.getElementById('apiModal').style.display = 'none';
+  }
+  renderPresets();
+});
+
+// ── API KEY ──
+function saveApiKey() {
+  const key = document.getElementById('apiKeyInput').value.trim();
+  if (!key.startsWith('AIza')) { showToast('מפתח לא תקין', 'error'); return; }
+  apiKey = key;
+  localStorage.setItem('gemini_api_key', key);
+  document.getElementById('apiModal').style.display = 'none';
+  showToast('מפתח נשמר בהצלחה', 'success');
+}
+
+function clearApiKey() {
+  if (!confirm('למחוק את מפתח ה-API השמור?')) return;
+  localStorage.removeItem('gemini_api_key');
+  apiKey = '';
+  document.getElementById('apiKeyInput').value = '';
+  document.getElementById('apiModal').style.display = 'flex';
+}
+
+// ── FILE LOAD ──
+function loadFile(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    const text = e.target.result;
+    initText(text, `קובץ: ${file.name}`);
+  };
+  reader.readAsText(file);
+  event.target.value = '';
+}
+
+function initText(text, label) {
+  versions = [];
+  currentVersionIndex = -1;
+  addVersion(text, label || 'מקור');
+  document.getElementById('mainEditor').value = text;
+  updateUI();
+  showToast('טקסט נטען בהצלחה', 'success');
+}
+
+// ── VERSIONS ──
+function addVersion(text, instruction) {
+  const version = {
+    id: versions.length,
+    text,
+    instruction,
+    time: new Date().toLocaleTimeString('he-IL', { hour: '2-digit', minute: '2-digit' })
+  };
+  versions.push(version);
+  currentVersionIndex = versions.length - 1;
+  renderVersionsList();
+  updateExportButtons();
+}
+
+function renderVersionsList() {
+  const list = document.getElementById('versionsList');
+  if (versions.length === 0) {
+    list.innerHTML = '<div style="color:var(--text3); font-size:12px; text-align:center; padding:20px;">טרם נוצרו גרסאות</div>';
+    return;
+  }
+  list.innerHTML = versions.map((v, i) => `
+    <div class="version-item fade-in ${i === currentVersionIndex ? 'active' : ''} ${i === 0 ? 'version-original' : ''}"
+         onclick="switchVersion(${i})">
+      <div class="version-num">${i === 0 ? 'מקור' : `v${i}`}</div>
+      <div class="version-instruction">${v.instruction}</div>
+      <div class="version-time">${v.time}</div>
+    </div>
+  `).reverse().join('');
+
+  document.getElementById('backBtn').disabled = currentVersionIndex <= 0;
+}
+
+function switchVersion(index) {
+  currentVersionIndex = index;
+  const v = versions[index];
+  document.getElementById('mainEditor').value = v.text;
+  pendingNewText = '';
+  hideSplit();
+  renderVersionsList();
+  updateCharCount();
+}
+
+function goBack() {
+  if (currentVersionIndex > 0) {
+    switchVersion(currentVersionIndex - 1);
+    showToast('חזרת לגרסה הקודמת');
+  }
+}
+
+// ── RUN INSTRUCTION ──
+async function runInstruction() {
+  const instruction = document.getElementById('instructionInput').value.trim();
+  const text = document.getElementById('mainEditor').value.trim();
+
+  if (!instruction) { showToast('כתוב הוראה תחילה', 'error'); return; }
+  if (!text) { showToast('אין טקסט לעיבוד', 'error'); return; }
+  if (!apiKey) { document.getElementById('apiModal').style.display = 'flex'; return; }
+
+  setLoading(true);
+
+  const prompt = `אתה עורך ספרותי מקצועי. קיבלת את הטקסט הבא ועליך לבצע עליו את ההוראה הנתונה.
+
+חשוב מאוד:
+- החזר רק את הטקסט המעובד, ללא הסברים, ללא כותרות, ללא הערות
+- שמור על שפת המקור (עברית/אנגלית)
+- אל תוסיף שום תוכן שלא התבקש
+
+ההוראה: ${instruction}
+
+הטקסט:
+${text}`;
+
+  try {
+    const response = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: prompt }] }],
+          generationConfig: { temperature: 0.7, maxOutputTokens: 65536 }
+        })
+      }
+    );
+
+    const data = await response.json();
+
+    if (data.error) throw new Error(data.error.message);
+
+    const newText = data.candidates?.[0]?.content?.parts?.[0]?.text;
+    if (!newText) throw new Error('לא התקבלה תשובה מהמודל');
+
+    // Show in split view
+    pendingNewText = newText;
+    showSplit(newText);
+    addVersion(newText, instruction);
+    document.getElementById('instructionInput').value = '';
+    autoResize(document.getElementById('instructionInput'));
+    showToast('הגרסה החדשה מוצגת בצד שמאל', 'success');
+
+  } catch (err) {
+    showToast(`שגיאה: ${err.message}`, 'error');
+    console.error(err);
+  } finally {
+    setLoading(false);
+  }
+}
+
+// ── SPLIT VIEW LOGIC ──
+function showSplit(newText) {
+  const currentText = versions.length >= 2
+    ? versions[currentVersionIndex - 1]?.text || ''
+    : versions[0]?.text || '';
+
+  const currentView = document.getElementById('currentView');
+  currentView.innerHTML = `<div class="readonly-text">${escapeHtml(currentText)}</div>`;
+  document.getElementById('mainEditor').value = newText;
+
+  document.getElementById('adoptBtn').style.display = 'inline-flex';
+  document.getElementById('rightPaneLabel').textContent = '// גרסה חדשה';
+  updateCharCount();
+}
+
+function hideSplit() {
+  const currentView = document.getElementById('currentView');
+  if (versions.length === 0) {
+    currentView.innerHTML = `<div class="empty-state"><div class="empty-icon">📄</div><h3>אין טקסט</h3><p>פתח קובץ .txt או הדבק טקסט בחלון הימני</p></div>`;
+  } else {
+    const prev = versions[currentVersionIndex - 1];
+    if (prev) {
+      currentView.innerHTML = `<div class="readonly-text">${escapeHtml(prev.text)}</div>`;
+    }
+  }
+  document.getElementById('adoptBtn').style.display = 'none';
+  document.getElementById('rightPaneLabel').textContent = '// טקסט פעיל';
+}
+
+function adoptNew() {
+  showToast('גרסה נוכחית עודכנה');
+  hideSplit();
+}
+
+// ── VIEW TOGGLE ──
+function setView(mode) {
+  viewMode = mode;
+  const area = document.getElementById('editorArea');
+  const splitBtn = document.getElementById('splitViewBtn');
+  const singleBtn = document.getElementById('singleViewBtn');
+
+  if (mode === 'split') {
+    area.classList.remove('single-view');
+    splitBtn.classList.add('active');
+    singleBtn.classList.remove('active');
+  } else {
+    area.classList.add('single-view');
+    singleBtn.classList.add('active');
+    splitBtn.classList.remove('active');
+  }
+}
+
+// ── EDITOR INPUT ──
+function onEditorInput() {
+  updateCharCount();
+  const text = document.getElementById('mainEditor').value.trim();
+  if (versions.length === 0 && text.length > 0) {
+    document.getElementById('runBtn').disabled = false;
+  }
+  updateRunBtn();
+}
+
+function updateRunBtn() {
+  const hasText = document.getElementById('mainEditor').value.trim().length > 0;
+  document.getElementById('runBtn').disabled = !hasText;
+}
+
+function updateCharCount() {
+  const text = document.getElementById('mainEditor').value;
+  const words = text.trim() ? text.trim().split(/\s+/).length : 0;
+  const chars = text.length;
+  document.getElementById('charCount').textContent = `${words.toLocaleString()} מילים · ${chars.toLocaleString()} תווים`;
+  document.getElementById('rightCharCount').textContent = `${words.toLocaleString()} מילים`;
+}
+
+// ── PRESETS ──
+function setPreset(text) {
+  document.getElementById('instructionInput').value = text;
+  autoResize(document.getElementById('instructionInput'));
+  document.getElementById('instructionInput').focus();
+}
+
+function openCustomPreset() {
+  const name = prompt('שם ההוראה:');
+  if (!name) return;
+  const instruction = prompt('תוכן ההוראה:');
+  if (!instruction) return;
+  customPresets.push({ name, instruction });
+  localStorage.setItem('custom_presets', JSON.stringify(customPresets));
+  renderPresets();
+}
+
+function renderPresets() {
+  // Custom presets added dynamically - base presets always shown
+}
+
+// ── EXPORT ──
+function exportDocx() {
+  const text = document.getElementById('mainEditor').value;
+  if (!text) { showToast('אין טקסט לייצוא', 'error'); return; }
+
+  // Simple RTF export (opens in Word)
+  const rtf = `{\\rtf1\\ansi\\deff0
+{\\fonttbl{\\f0\\froman\\fcharset0 Times New Roman;}}
+{\\f0\\fs24 ${text.replace(/\n/g, '\\par\n').replace(/[\\{}]/g, '\\$&')}}}`;
+
+  download('סיפור.rtf', rtf, 'application/rtf');
+  showToast('קובץ RTF יוצא (נפתח ב-Word)', 'success');
+}
+
+function exportPdf() {
+  const text = document.getElementById('mainEditor').value;
+  if (!text) { showToast('אין טקסט לייצוא', 'error'); return; }
+
+  const win = window.open('', '_blank');
+  win.document.write(`
+    <!DOCTYPE html>
+    <html dir="rtl">
+    <head>
+    <meta charset="UTF-8">
+    <style>
+      body { font-family: 'Times New Roman', serif; font-size: 14pt; line-height: 1.8;
+             margin: 3cm; direction: rtl; color: #111; }
+      pre { white-space: pre-wrap; }
+    </style>
+    </head>
+    <body><pre>${escapeHtml(text)}</pre>
+    <script>window.onload=()=>{window.print();}<\/script>
+    </body></html>
+  `);
+  win.document.close();
+}
+
+function download(filename, content, type) {
+  const blob = new Blob([content], { type });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = filename;
+  a.click();
+}
+
+function updateExportButtons() {
+  const show = versions.length > 0;
+  document.getElementById('exportDocxBtn').style.display = show ? 'inline-flex' : 'none';
+  document.getElementById('exportPdfBtn').style.display = show ? 'inline-flex' : 'none';
+}
+
+// ── HELPERS ──
+function setLoading(on) {
+  document.getElementById('loadingBar').classList.toggle('active', on);
+  document.getElementById('spinner').classList.toggle('active', on);
+  document.getElementById('runBtnText').textContent = on ? 'מעבד...' : '▶ הרץ';
+  document.getElementById('runBtn').disabled = on;
+}
+
+function showToast(msg, type = '') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = `toast ${type}`;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+function handleInstructionKey(e) {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    runInstruction();
+  }
+}
+
+function autoResize(el) {
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 120) + 'px';
+}
+
+function escapeHtml(str) {
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function updateUI() {
+  updateCharCount();
+  updateRunBtn();
+  renderVersionsList();
+  updateExportButtons();
+}
+
+// API key enter key
+document.getElementById('apiKeyInput')?.addEventListener('keydown', e => {
+  if (e.key === 'Enter') saveApiKey();
+});
+</script>
+</body>
+</html>

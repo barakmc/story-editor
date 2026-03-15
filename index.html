@@ -3,30 +3,32 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>עורך סיפורים | AI</title>
-<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<title>עורך סיפורים</title>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700&family=Ploni+ML:wght@400;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0d0f12;
-    --surface: #141720;
-    --surface2: #1c2030;
-    --surface3: #242840;
-    --border: #2a2f45;
-    --border2: #353b55;
-    --accent: #00d4aa;
-    --accent2: #0099ff;
-    --accent-dim: rgba(0, 212, 170, 0.12);
-    --accent-dim2: rgba(0, 153, 255, 0.1);
-    --text: #e8eaf0;
-    --text2: #8892aa;
-    --text3: #545e78;
-    --danger: #ff4d6d;
-    --warning: #ffaa00;
-    --success: #00d4aa;
-    --mono: 'JetBrains Mono', monospace;
+    --bg: #f7f7f7;
+    --white: #ffffff;
+    --surface: #ffffff;
+    --surface2: #f7f7f7;
+    --surface3: #efefef;
+    --border: #e8e8e8;
+    --border2: #d8d8d8;
+    --text: #222222;
+    --text2: #717171;
+    --text3: #b0b0b0;
+    --accent: #FF385C;
+    --accent-light: rgba(255,56,92,0.08);
+    --accent-hover: #e0314f;
+    --blue: #0066cc;
+    --blue-light: rgba(0,102,204,0.08);
+    --green: #008a05;
+    --radius: 12px;
+    --radius2: 16px;
+    --radius3: 24px;
+    --shadow: 0 2px 8px rgba(0,0,0,0.08), 0 0 1px rgba(0,0,0,0.06);
+    --shadow2: 0 4px 20px rgba(0,0,0,0.10), 0 0 1px rgba(0,0,0,0.06);
     --sans: 'Heebo', sans-serif;
-    --radius: 8px;
-    --radius2: 12px;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -47,73 +49,75 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 24px;
-    height: 56px;
-    background: var(--surface);
+    padding: 0 28px;
+    height: 60px;
+    background: var(--white);
     border-bottom: 1px solid var(--border);
     flex-shrink: 0;
-    position: relative;
     z-index: 10;
   }
 
   .logo {
     display: flex;
     align-items: center;
-    gap: 10px;
-    font-family: var(--mono);
-    font-size: 13px;
-    color: var(--accent);
-    letter-spacing: 0.05em;
+    gap: 8px;
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--text);
+    letter-spacing: -0.01em;
   }
 
-  .logo-dot {
-    width: 8px; height: 8px;
+  .logo-icon {
+    width: 28px; height: 28px;
     background: var(--accent);
-    border-radius: 50%;
-    box-shadow: 0 0 8px var(--accent);
-    animation: pulse 2s ease-in-out infinite;
-  }
-
-  @keyframes pulse {
-    0%, 100% { opacity: 1; box-shadow: 0 0 8px var(--accent); }
-    50% { opacity: 0.5; box-shadow: 0 0 2px var(--accent); }
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    color: white;
+    font-size: 14px;
   }
 
   .header-actions { display: flex; align-items: center; gap: 8px; }
 
   .btn {
     display: inline-flex; align-items: center; gap: 6px;
-    padding: 7px 14px;
+    padding: 8px 16px;
     font-family: var(--sans); font-size: 13px; font-weight: 500;
     border: 1px solid var(--border2);
-    border-radius: var(--radius);
-    background: var(--surface2);
+    border-radius: var(--radius3);
+    background: var(--white);
     color: var(--text2);
     cursor: pointer;
     transition: all 0.15s;
     white-space: nowrap;
+    line-height: 1;
   }
-  .btn:hover { background: var(--surface3); color: var(--text); border-color: var(--border2); }
+  .btn:hover { background: var(--surface2); color: var(--text); border-color: var(--text3); }
 
   .btn-accent {
-    background: var(--accent-dim);
-    border-color: var(--accent);
+    background: var(--accent-light);
+    border-color: transparent;
     color: var(--accent);
   }
-  .btn-accent:hover { background: rgba(0,212,170,0.2); }
+  .btn-accent:hover { background: rgba(255,56,92,0.14); border-color: transparent; }
 
   .btn-primary {
     background: var(--accent);
     border-color: var(--accent);
-    color: #0d0f12;
+    color: white;
     font-weight: 600;
+    padding: 0 22px;
+    height: 44px;
+    border-radius: var(--radius3);
+    font-size: 14px;
+    align-self: flex-end;
+    flex-shrink: 0;
   }
-  .btn-primary:hover { background: #00f0c4; }
+  .btn-primary:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
   .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
 
-  .btn-sm { padding: 5px 10px; font-size: 12px; }
-  .btn-danger { border-color: var(--danger); color: var(--danger); background: rgba(255,77,109,0.08); }
-  .btn-danger:hover { background: rgba(255,77,109,0.18); }
+  .btn-sm { padding: 6px 12px; font-size: 12px; }
+  .btn-ghost { border-color: transparent; background: transparent; }
+  .btn-ghost:hover { background: var(--surface2); border-color: transparent; }
 
   /* ── LAYOUT ── */
   .app-body {
@@ -124,8 +128,8 @@
 
   /* ── SIDEBAR ── */
   .sidebar {
-    width: 260px;
-    background: var(--surface);
+    width: 256px;
+    background: var(--white);
     border-left: 1px solid var(--border);
     display: flex;
     flex-direction: column;
@@ -133,27 +137,29 @@
     overflow: hidden;
   }
 
-  .sidebar-section {
-    padding: 16px;
+  .sidebar-header {
+    padding: 16px 16px 12px;
     border-bottom: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
   }
 
   .sidebar-title {
-    font-family: var(--mono);
-    font-size: 10px;
-    letter-spacing: 0.12em;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
     color: var(--text3);
     text-transform: uppercase;
-    margin-bottom: 10px;
   }
 
   .versions-list {
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 2px;
     overflow-y: auto;
     flex: 1;
-    padding: 12px;
+    padding: 8px;
   }
 
   .version-item {
@@ -162,21 +168,23 @@
     border: 1px solid transparent;
     cursor: pointer;
     transition: all 0.15s;
-    position: relative;
   }
-  .version-item:hover { background: var(--surface2); border-color: var(--border); }
-  .version-item.active { background: var(--accent-dim); border-color: var(--accent); }
+  .version-item:hover { background: var(--surface2); }
+  .version-item.active { background: var(--accent-light); border-color: rgba(255,56,92,0.2); }
 
   .version-num {
-    font-family: var(--mono);
     font-size: 10px;
-    color: var(--accent);
+    font-weight: 600;
+    color: var(--text3);
     margin-bottom: 3px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
   }
   .version-item.active .version-num { color: var(--accent); }
+  .version-item.version-original .version-num { color: var(--blue); }
 
   .version-instruction {
-    font-size: 12px;
+    font-size: 13px;
     color: var(--text2);
     line-height: 1.4;
     overflow: hidden;
@@ -184,19 +192,15 @@
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
   }
+  .version-item.active .version-instruction { color: var(--text); }
 
   .version-time {
-    font-family: var(--mono);
-    font-size: 10px;
+    font-size: 11px;
     color: var(--text3);
     margin-top: 4px;
   }
 
-  .version-original {
-    background: rgba(0,153,255,0.08);
-    border-color: rgba(0,153,255,0.3) !important;
-  }
-  .version-original .version-num { color: var(--accent2); }
+  .version-original { background: var(--blue-light) !important; border-color: rgba(0,102,204,0.15) !important; }
 
   /* ── MAIN AREA ── */
   .main-area {
@@ -204,15 +208,59 @@
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    background: var(--bg);
   }
 
-  /* ── SPLIT VIEW ── */
+  /* ── TOOLBAR ── */
+  .toolbar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+
+  .toolbar-sep {
+    width: 1px; height: 18px;
+    background: var(--border);
+    margin: 0 2px;
+  }
+
+  .view-toggle {
+    display: flex;
+    background: var(--surface2);
+    border-radius: var(--radius3);
+    padding: 3px;
+    gap: 2px;
+  }
+  .view-btn {
+    padding: 5px 12px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text2);
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    font-family: var(--sans);
+    border-radius: 20px;
+    transition: all 0.15s;
+  }
+  .view-btn.active { background: var(--white); color: var(--text); box-shadow: var(--shadow); }
+
+  .char-count {
+    font-size: 12px;
+    color: var(--text3);
+    margin-right: auto;
+  }
+
+  /* ── EDITOR AREA ── */
   .editor-area {
     flex: 1;
     display: flex;
     overflow: hidden;
-    position: relative;
+    background: var(--bg);
+    gap: 1px;
   }
 
   .editor-pane {
@@ -220,29 +268,28 @@
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    border-left: 1px solid var(--border);
+    background: var(--white);
   }
-  .editor-pane:last-child { border-left: none; }
+
+  .editor-pane + .editor-pane {
+    border-right: 1px solid var(--border);
+  }
 
   .pane-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 10px 16px;
-    background: var(--surface);
+    padding: 10px 18px;
+    background: var(--surface2);
     border-bottom: 1px solid var(--border);
     font-size: 12px;
+    font-weight: 500;
     color: var(--text2);
     flex-shrink: 0;
   }
 
-  .pane-label {
-    font-family: var(--mono);
-    font-size: 11px;
-    letter-spacing: 0.05em;
-  }
-
-  .pane-label.current { color: var(--accent2); }
+  .pane-label { font-size: 12px; font-weight: 500; }
+  .pane-label.current { color: var(--blue); }
   .pane-label.new { color: var(--accent); }
 
   textarea {
@@ -253,8 +300,8 @@
     color: var(--text);
     font-family: var(--sans);
     font-size: 15px;
-    line-height: 1.8;
-    padding: 24px;
+    line-height: 1.85;
+    padding: 28px 32px;
     resize: none;
     direction: rtl;
   }
@@ -263,22 +310,37 @@
   .readonly-text {
     flex: 1;
     overflow-y: auto;
-    padding: 24px;
+    padding: 28px 32px;
     font-size: 15px;
-    line-height: 1.8;
-    color: var(--text);
+    line-height: 1.85;
+    color: var(--text2);
     white-space: pre-wrap;
     direction: rtl;
   }
 
-  /* ── SINGLE VIEW ── */
   .single-view .editor-pane:first-child { display: none; }
+
+  /* ── EMPTY STATE ── */
+  .empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    gap: 10px;
+    color: var(--text3);
+    padding: 40px;
+    text-align: center;
+  }
+  .empty-icon { font-size: 36px; opacity: 0.4; }
+  .empty-state h3 { font-size: 15px; color: var(--text2); font-weight: 500; }
+  .empty-state p { font-size: 13px; line-height: 1.6; }
 
   /* ── INSTRUCTION AREA ── */
   .instruction-area {
-    background: var(--surface);
+    background: var(--white);
     border-top: 1px solid var(--border);
-    padding: 16px 20px;
+    padding: 14px 20px 16px;
     flex-shrink: 0;
   }
 
@@ -286,6 +348,8 @@
     display: flex;
     gap: 10px;
     align-items: flex-end;
+    max-width: 820px;
+    margin: 0 auto;
   }
 
   .instruction-input-wrap {
@@ -296,21 +360,26 @@
   .instruction-input {
     width: 100%;
     background: var(--surface2);
-    border: 1px solid var(--border2);
-    border-radius: var(--radius);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius2);
     color: var(--text);
     font-family: var(--sans);
     font-size: 14px;
-    padding: 10px 14px;
+    padding: 12px 16px;
     direction: rtl;
     outline: none;
     resize: none;
-    min-height: 44px;
-    max-height: 120px;
-    line-height: 1.5;
-    transition: border-color 0.15s;
+    min-height: 48px;
+    max-height: 140px;
+    line-height: 1.6;
+    transition: border-color 0.15s, background 0.15s;
+    display: block;
   }
-  .instruction-input:focus { border-color: var(--accent); }
+  .instruction-input:focus {
+    border-color: var(--accent);
+    background: var(--white);
+    box-shadow: 0 0 0 3px rgba(255,56,92,0.08);
+  }
   .instruction-input::placeholder { color: var(--text3); }
 
   .presets-row {
@@ -318,27 +387,32 @@
     gap: 6px;
     flex-wrap: wrap;
     margin-top: 10px;
+    max-width: 820px;
+    margin-right: auto;
+    margin-left: auto;
   }
 
   .preset-chip {
-    padding: 4px 10px;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 20px;
+    padding: 5px 12px;
+    background: var(--white);
+    border: 1px solid var(--border2);
+    border-radius: var(--radius3);
     font-size: 12px;
+    font-weight: 500;
     color: var(--text2);
     cursor: pointer;
     transition: all 0.15s;
   }
-  .preset-chip:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-dim); }
+  .preset-chip:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-light); }
 
   /* ── LOADING ── */
   .loading-bar {
     height: 2px;
-    background: linear-gradient(90deg, var(--accent), var(--accent2), var(--accent));
+    background: linear-gradient(90deg, var(--accent), #ff8fa3, var(--accent));
     background-size: 200% 100%;
     animation: shimmer 1.2s linear infinite;
     display: none;
+    flex-shrink: 0;
   }
   .loading-bar.active { display: block; }
   @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
@@ -346,156 +420,83 @@
   /* ── MODAL ── */
   .modal-overlay {
     position: fixed; inset: 0;
-    background: rgba(0,0,0,0.7);
+    background: rgba(34,34,34,0.5);
     display: flex; align-items: center; justify-content: center;
     z-index: 100;
-    backdrop-filter: blur(4px);
+    backdrop-filter: blur(3px);
   }
   .modal {
-    background: var(--surface);
-    border: 1px solid var(--border2);
+    background: var(--white);
     border-radius: var(--radius2);
-    padding: 28px;
-    width: 420px;
+    padding: 32px;
+    width: 440px;
     max-width: 90vw;
+    box-shadow: var(--shadow2);
   }
-  .modal h2 { font-size: 18px; margin-bottom: 6px; color: var(--text); }
-  .modal p { font-size: 13px; color: var(--text2); margin-bottom: 18px; line-height: 1.6; }
+  .modal h2 { font-size: 20px; font-weight: 600; margin-bottom: 8px; }
+  .modal p { font-size: 14px; color: var(--text2); margin-bottom: 20px; line-height: 1.6; }
 
   .modal input {
     width: 100%;
-    background: var(--bg);
-    border: 1px solid var(--border2);
+    background: var(--surface2);
+    border: 1.5px solid var(--border);
     border-radius: var(--radius);
     color: var(--text);
-    font-family: var(--mono);
+    font-family: 'Courier New', monospace;
     font-size: 13px;
-    padding: 10px 12px;
+    padding: 11px 14px;
     outline: none;
     direction: ltr;
-    margin-bottom: 14px;
+    margin-bottom: 16px;
     transition: border-color 0.15s;
   }
-  .modal input:focus { border-color: var(--accent); }
-
-  /* ── TOOLBAR ── */
-  .toolbar {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 10px 20px;
-    background: var(--surface);
-    border-bottom: 1px solid var(--border);
-    flex-shrink: 0;
-  }
-
-  .toolbar-sep {
-    width: 1px; height: 20px;
-    background: var(--border);
-    margin: 0 4px;
-  }
-
-  .view-toggle {
-    display: flex;
-    border: 1px solid var(--border2);
-    border-radius: var(--radius);
-    overflow: hidden;
-  }
-  .view-btn {
-    padding: 6px 12px;
-    font-size: 12px;
-    color: var(--text2);
-    cursor: pointer;
-    background: transparent;
-    border: none;
-    font-family: var(--sans);
-    transition: all 0.15s;
-  }
-  .view-btn.active { background: var(--surface3); color: var(--text); }
-  .view-btn:hover:not(.active) { color: var(--text); }
+  .modal input:focus { border-color: var(--accent); background: var(--white); }
 
   /* ── TOAST ── */
   .toast {
     position: fixed;
-    bottom: 24px;
+    bottom: 28px;
     left: 50%;
     transform: translateX(-50%) translateY(80px);
-    background: var(--surface2);
-    border: 1px solid var(--border2);
-    border-radius: var(--radius);
-    padding: 10px 18px;
+    background: var(--text);
+    border-radius: var(--radius3);
+    padding: 11px 20px;
     font-size: 13px;
-    color: var(--text);
+    font-weight: 500;
+    color: white;
     z-index: 200;
-    transition: transform 0.3s ease;
+    transition: transform 0.25s ease;
     white-space: nowrap;
+    box-shadow: var(--shadow2);
   }
   .toast.show { transform: translateX(-50%) translateY(0); }
-  .toast.success { border-color: var(--accent); color: var(--accent); }
-  .toast.error { border-color: var(--danger); color: var(--danger); }
+  .toast.success { background: #1a1a1a; }
+  .toast.error { background: var(--accent); }
 
-  /* ── EMPTY STATE ── */
-  .empty-state {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-    gap: 12px;
-    color: var(--text3);
-    padding: 40px;
-    text-align: center;
-  }
-  .empty-icon { font-size: 40px; opacity: 0.3; }
-  .empty-state h3 { font-size: 16px; color: var(--text2); }
-  .empty-state p { font-size: 13px; line-height: 1.6; }
-
-  /* ── UPLOAD ZONE ── */
-  .upload-zone {
-    border: 2px dashed var(--border2);
-    border-radius: var(--radius2);
-    padding: 20px;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.2s;
-    color: var(--text3);
-    font-size: 13px;
-  }
-  .upload-zone:hover, .upload-zone.drag { border-color: var(--accent); color: var(--accent); background: var(--accent-dim); }
-
-  /* ── CHAR COUNT ── */
-  .char-count {
-    font-family: var(--mono);
-    font-size: 10px;
-    color: var(--text3);
-  }
-
-  /* ── SCROLLBAR ── */
-  ::-webkit-scrollbar { width: 6px; }
-  ::-webkit-scrollbar-track { background: transparent; }
-  ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
-  ::-webkit-scrollbar-thumb:hover { background: var(--text3); }
-
-  /* ── ANIMATIONS ── */
-  .fade-in { animation: fadeIn 0.3s ease; }
-  @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
-
+  /* ── SPINNER ── */
   .spinner {
-    width: 16px; height: 16px;
-    border: 2px solid var(--border2);
-    border-top-color: var(--accent);
+    width: 14px; height: 14px;
+    border: 2px solid rgba(255,255,255,0.4);
+    border-top-color: white;
     border-radius: 50%;
-    animation: spin 0.8s linear infinite;
+    animation: spin 0.7s linear infinite;
     display: none;
+    flex-shrink: 0;
   }
   .spinner.active { display: inline-block; }
   @keyframes spin { to { transform: rotate(360deg); } }
 
-  /* ── RESPONSIVE ── */
-  @media (max-width: 768px) {
-    .sidebar { display: none; }
-    .single-view .editor-pane:first-child { display: none; }
-  }
+  /* ── ANIMATIONS ── */
+  .fade-in { animation: fadeIn 0.2s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(3px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 5px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+
+  /* ── DIVIDER BETWEEN PANES ── */
+  .editor-area { gap: 0; }
 </style>
 </head>
 <body>
@@ -503,12 +504,12 @@
 <!-- API KEY MODAL -->
 <div class="modal-overlay" id="apiModal">
   <div class="modal">
-    <h2>🔑 הגדרת מפתח API</h2>
-    <p>הזן את מפתח ה-Gemini API שלך. המפתח נשמר באופן מקומי בדפדפן בלבד ולא נשלח לשום שרת.</p>
+    <h2>הגדרת מפתח API</h2>
+    <p>הזן את מפתח ה-Gemini API שלך. המפתח נשמר בדפדפן בלבד ולא עובר לשום שרת חיצוני.</p>
     <input type="password" id="apiKeyInput" placeholder="AIza..." autocomplete="off" />
-    <div style="display:flex; gap:8px; justify-content:flex-end;">
-      <a href="https://aistudio.google.com/app/apikey" target="_blank" class="btn btn-sm">קבל מפתח חינמי ←</a>
-      <button class="btn btn-primary" onclick="saveApiKey()">שמור והתחל</button>
+    <div style="display:flex; gap:8px; justify-content:flex-end; align-items:center;">
+      <a href="https://aistudio.google.com/app/apikey" target="_blank" class="btn btn-sm btn-ghost" style="font-size:13px;">קבל מפתח חינמי ↗</a>
+      <button class="btn btn-primary" style="height:38px; padding:0 20px;" onclick="saveApiKey()">שמור והתחל</button>
     </div>
   </div>
 </div>
@@ -516,18 +517,13 @@
 <!-- HEADER -->
 <header>
   <div class="logo">
-    <div class="logo-dot"></div>
-    <span>STORY_EDITOR</span>
-    <span style="color:var(--text3); font-size:11px;">v1.0</span>
+    <div class="logo-icon">✍</div>
+    עורך סיפורים
   </div>
   <div class="header-actions">
-    <button class="btn btn-sm" onclick="exportDocx()" id="exportDocxBtn" style="display:none">
-      ⬇ ייצא Word
-    </button>
-    <button class="btn btn-sm" onclick="exportPdf()" id="exportPdfBtn" style="display:none">
-      ⬇ ייצא PDF
-    </button>
-    <button class="btn btn-sm btn-danger" onclick="clearApiKey()" title="שנה מפתח API">🔑</button>
+    <button class="btn btn-sm" onclick="exportDocx()" id="exportDocxBtn" style="display:none">⬇ Word</button>
+    <button class="btn btn-sm" onclick="exportPdf()" id="exportPdfBtn" style="display:none">⬇ PDF</button>
+    <button class="btn btn-sm btn-ghost" onclick="clearApiKey()" title="שנה מפתח API" style="color:var(--text3); font-size:12px;">🔑 API</button>
   </div>
 </header>
 
@@ -539,15 +535,15 @@
 
   <!-- SIDEBAR -->
   <div class="sidebar">
-    <div class="sidebar-section">
-      <div class="sidebar-title">גרסאות</div>
-      <button class="btn btn-sm" style="width:100%; justify-content:center;" onclick="goBack()" id="backBtn" disabled>
+    <div class="sidebar-header">
+      <div class="sidebar-title">היסטוריית גרסאות</div>
+      <button class="btn btn-sm" style="width:100%; justify-content:center; border-radius:var(--radius);" onclick="goBack()" id="backBtn" disabled>
         ↩ חזור שלב אחורה
       </button>
     </div>
     <div class="versions-list" id="versionsList">
-      <div style="color:var(--text3); font-size:12px; text-align:center; padding:20px;">
-        טרם נוצרו גרסאות
+      <div style="color:var(--text3); font-size:12px; text-align:center; padding:24px 12px; line-height:1.6;">
+        טרם נוצרו גרסאות.<br>פתח קובץ או הדבק טקסט כדי להתחיל.
       </div>
     </div>
   </div>
@@ -557,7 +553,7 @@
 
     <!-- TOOLBAR -->
     <div class="toolbar">
-      <label for="fileInput" class="btn btn-sm" style="cursor:pointer;">
+      <label for="fileInput" class="btn btn-sm" style="cursor:pointer; border-radius:var(--radius3);">
         📂 פתח קובץ
       </label>
       <input type="file" id="fileInput" accept=".txt,.md" style="display:none" onchange="loadFile(event)">
@@ -569,21 +565,17 @@
         <button class="view-btn" id="singleViewBtn" onclick="setView('single')">יחיד</button>
       </div>
 
-      <div class="toolbar-sep"></div>
-
-      <span class="char-count" id="charCount">—</span>
+      <span class="char-count" id="charCount"></span>
     </div>
 
     <!-- EDITOR AREA -->
     <div class="editor-area" id="editorArea">
 
-      <!-- LEFT PANE: CURRENT -->
+      <!-- LEFT PANE: PREVIOUS VERSION -->
       <div class="editor-pane" id="leftPane">
         <div class="pane-header">
-          <span class="pane-label current">// גרסה נוכחית</span>
-          <div style="display:flex; gap:6px;">
-            <button class="btn btn-sm" onclick="adoptNew()" id="adoptBtn" style="display:none" title="קבל גרסה חדשה כגרסה הנוכחית">✓ קבל</button>
-          </div>
+          <span class="pane-label current">גרסה קודמת</span>
+          <button class="btn btn-sm btn-accent" onclick="adoptNew()" id="adoptBtn" style="display:none; border-radius:var(--radius3);">✓ קבל גרסה חדשה</button>
         </div>
         <div id="currentView">
           <div class="empty-state">
@@ -594,11 +586,11 @@
         </div>
       </div>
 
-      <!-- RIGHT PANE: EDITABLE -->
+      <!-- RIGHT PANE: ACTIVE EDITOR -->
       <div class="editor-pane" id="rightPane">
         <div class="pane-header">
-          <span class="pane-label new" id="rightPaneLabel">// טקסט פעיל</span>
-          <span class="char-count" id="rightCharCount"></span>
+          <span class="pane-label new" id="rightPaneLabel">טקסט פעיל</span>
+          <span style="font-size:11px; color:var(--text3);" id="rightCharCount"></span>
         </div>
         <textarea id="mainEditor" placeholder="הדבק כאן טקסט או פתח קובץ..." oninput="onEditorInput()"></textarea>
       </div>
@@ -620,18 +612,17 @@
         </div>
         <button class="btn btn-primary" id="runBtn" onclick="runInstruction()" disabled>
           <div class="spinner" id="spinner"></div>
-          <span id="runBtnText">▶ הרץ</span>
+          <span id="runBtnText">הרץ</span>
         </button>
       </div>
-      <div class="presets-row" id="presetsRow">
-        <span style="font-size:11px; color:var(--text3); margin-left:4px;">מהיר:</span>
+      <div class="presets-row">
+        <span style="font-size:11px; color:var(--text3); margin-left:2px; line-height:2;">מהיר:</span>
         <div class="preset-chip" onclick="setPreset('כתוב מחדש בסגנון ספרותי מינימליסטי')">סגנון מינימליסטי</div>
         <div class="preset-chip" onclick="setPreset('חלק את הטקסט לפרקים עם כותרות')">חלק לפרקים</div>
         <div class="preset-chip" onclick="setPreset('קצר את הטקסט ב-30% תוך שמירה על הרוח')">קצר ב-30%</div>
         <div class="preset-chip" onclick="setPreset('הוסף תיאורים חושניים ועשיר את הסצנות')">עשר תיאורים</div>
         <div class="preset-chip" onclick="setPreset('שפר את הדיאלוגים לטבעיים יותר')">שפר דיאלוגים</div>
         <div class="preset-chip" onclick="setPreset('כתוב מחדש בגוף ראשון')">גוף ראשון</div>
-        <div class="preset-chip" onclick="openCustomPreset()">+ הוסף</div>
       </div>
     </div>
 
@@ -642,32 +633,22 @@
 <div class="toast" id="toast"></div>
 
 <script>
-// ── STATE ──
 let apiKey = localStorage.getItem('gemini_api_key') || '';
-let versions = []; // { id, text, instruction, time }
+let versions = [];
 let currentVersionIndex = -1;
-let pendingNewText = '';
 let viewMode = 'split';
-let customPresets = JSON.parse(localStorage.getItem('custom_presets') || '[]');
 
-// ── INIT ──
 document.addEventListener('DOMContentLoaded', () => {
-  if (!apiKey) {
-    document.getElementById('apiModal').style.display = 'flex';
-  } else {
-    document.getElementById('apiModal').style.display = 'none';
-  }
-  renderPresets();
+  document.getElementById('apiModal').style.display = apiKey ? 'none' : 'flex';
 });
 
-// ── API KEY ──
 function saveApiKey() {
   const key = document.getElementById('apiKeyInput').value.trim();
   if (!key.startsWith('AIza')) { showToast('מפתח לא תקין', 'error'); return; }
   apiKey = key;
   localStorage.setItem('gemini_api_key', key);
   document.getElementById('apiModal').style.display = 'none';
-  showToast('מפתח נשמר בהצלחה', 'success');
+  showToast('מפתח נשמר בהצלחה');
 }
 
 function clearApiKey() {
@@ -678,15 +659,11 @@ function clearApiKey() {
   document.getElementById('apiModal').style.display = 'flex';
 }
 
-// ── FILE LOAD ──
 function loadFile(event) {
   const file = event.target.files[0];
   if (!file) return;
   const reader = new FileReader();
-  reader.onload = e => {
-    const text = e.target.result;
-    initText(text, `קובץ: ${file.name}`);
-  };
+  reader.onload = e => initText(e.target.result, `קובץ: ${file.name}`);
   reader.readAsText(file);
   event.target.value = '';
 }
@@ -697,18 +674,16 @@ function initText(text, label) {
   addVersion(text, label || 'מקור');
   document.getElementById('mainEditor').value = text;
   updateUI();
-  showToast('טקסט נטען בהצלחה', 'success');
+  showToast('טקסט נטען בהצלחה');
 }
 
-// ── VERSIONS ──
 function addVersion(text, instruction) {
-  const version = {
+  versions.push({
     id: versions.length,
     text,
     instruction,
     time: new Date().toLocaleTimeString('he-IL', { hour: '2-digit', minute: '2-digit' })
-  };
-  versions.push(version);
+  });
   currentVersionIndex = versions.length - 1;
   renderVersionsList();
   updateExportButtons();
@@ -716,27 +691,24 @@ function addVersion(text, instruction) {
 
 function renderVersionsList() {
   const list = document.getElementById('versionsList');
-  if (versions.length === 0) {
-    list.innerHTML = '<div style="color:var(--text3); font-size:12px; text-align:center; padding:20px;">טרם נוצרו גרסאות</div>';
+  if (!versions.length) {
+    list.innerHTML = '<div style="color:var(--text3);font-size:12px;text-align:center;padding:24px 12px;line-height:1.6;">טרם נוצרו גרסאות.<br>פתח קובץ או הדבק טקסט כדי להתחיל.</div>';
     return;
   }
-  list.innerHTML = versions.map((v, i) => `
-    <div class="version-item fade-in ${i === currentVersionIndex ? 'active' : ''} ${i === 0 ? 'version-original' : ''}"
-         onclick="switchVersion(${i})">
-      <div class="version-num">${i === 0 ? 'מקור' : `v${i}`}</div>
+  list.innerHTML = [...versions].reverse().map((v, ri) => {
+    const i = versions.length - 1 - ri;
+    return `<div class="version-item fade-in ${i === currentVersionIndex ? 'active' : ''} ${i === 0 ? 'version-original' : ''}" onclick="switchVersion(${i})">
+      <div class="version-num">${i === 0 ? 'מקור' : `גרסה ${i}`}</div>
       <div class="version-instruction">${v.instruction}</div>
       <div class="version-time">${v.time}</div>
-    </div>
-  `).reverse().join('');
-
+    </div>`;
+  }).join('');
   document.getElementById('backBtn').disabled = currentVersionIndex <= 0;
 }
 
 function switchVersion(index) {
   currentVersionIndex = index;
-  const v = versions[index];
-  document.getElementById('mainEditor').value = v.text;
-  pendingNewText = '';
+  document.getElementById('mainEditor').value = versions[index].text;
   hideSplit();
   renderVersionsList();
   updateCharCount();
@@ -749,11 +721,9 @@ function goBack() {
   }
 }
 
-// ── RUN INSTRUCTION ──
 async function runInstruction() {
   const instruction = document.getElementById('instructionInput').value.trim();
   const text = document.getElementById('mainEditor').value.trim();
-
   if (!instruction) { showToast('כתוב הוראה תחילה', 'error'); return; }
   if (!text) { showToast('אין טקסט לעיבוד', 'error'); return; }
   if (!apiKey) { document.getElementById('apiModal').style.display = 'flex'; return; }
@@ -764,7 +734,7 @@ async function runInstruction() {
 
 חשוב מאוד:
 - החזר רק את הטקסט המעובד, ללא הסברים, ללא כותרות, ללא הערות
-- שמור על שפת המקור (עברית/אנגלית)
+- שמור על שפת המקור
 - אל תוסיף שום תוכן שלא התבקש
 
 ההוראה: ${instruction}
@@ -784,220 +754,136 @@ ${text}`;
         })
       }
     );
-
     const data = await response.json();
-
     if (data.error) throw new Error(data.error.message);
-
     const newText = data.candidates?.[0]?.content?.parts?.[0]?.text;
-    if (!newText) throw new Error('לא התקבלה תשובה מהמודל');
+    if (!newText) throw new Error('לא התקבלה תשובה');
 
-    // Show in split view
-    pendingNewText = newText;
     showSplit(newText);
     addVersion(newText, instruction);
     document.getElementById('instructionInput').value = '';
     autoResize(document.getElementById('instructionInput'));
-    showToast('הגרסה החדשה מוצגת בצד שמאל', 'success');
-
+    showToast('הגרסה החדשה מוצגת בצד שמאל');
   } catch (err) {
     showToast(`שגיאה: ${err.message}`, 'error');
-    console.error(err);
   } finally {
     setLoading(false);
   }
 }
 
-// ── SPLIT VIEW LOGIC ──
 function showSplit(newText) {
-  const currentText = versions.length >= 2
-    ? versions[currentVersionIndex - 1]?.text || ''
-    : versions[0]?.text || '';
-
-  const currentView = document.getElementById('currentView');
-  currentView.innerHTML = `<div class="readonly-text">${escapeHtml(currentText)}</div>`;
+  const prevText = versions.length >= 2 ? versions[currentVersionIndex - 1]?.text || '' : versions[0]?.text || '';
+  document.getElementById('currentView').innerHTML = `<div class="readonly-text">${escapeHtml(prevText)}</div>`;
   document.getElementById('mainEditor').value = newText;
-
   document.getElementById('adoptBtn').style.display = 'inline-flex';
-  document.getElementById('rightPaneLabel').textContent = '// גרסה חדשה';
+  document.getElementById('rightPaneLabel').textContent = 'גרסה חדשה';
   updateCharCount();
 }
 
 function hideSplit() {
-  const currentView = document.getElementById('currentView');
-  if (versions.length === 0) {
-    currentView.innerHTML = `<div class="empty-state"><div class="empty-icon">📄</div><h3>אין טקסט</h3><p>פתח קובץ .txt או הדבק טקסט בחלון הימני</p></div>`;
-  } else {
-    const prev = versions[currentVersionIndex - 1];
-    if (prev) {
-      currentView.innerHTML = `<div class="readonly-text">${escapeHtml(prev.text)}</div>`;
-    }
-  }
+  const prev = versions[currentVersionIndex - 1];
+  document.getElementById('currentView').innerHTML = prev
+    ? `<div class="readonly-text">${escapeHtml(prev.text)}</div>`
+    : `<div class="empty-state"><div class="empty-icon">📄</div><h3>אין טקסט</h3><p>פתח קובץ .txt או הדבק טקסט בחלון הימני</p></div>`;
   document.getElementById('adoptBtn').style.display = 'none';
-  document.getElementById('rightPaneLabel').textContent = '// טקסט פעיל';
+  document.getElementById('rightPaneLabel').textContent = 'טקסט פעיל';
 }
 
 function adoptNew() {
-  showToast('גרסה נוכחית עודכנה');
+  showToast('גרסה עודכנה');
   hideSplit();
 }
 
-// ── VIEW TOGGLE ──
 function setView(mode) {
   viewMode = mode;
-  const area = document.getElementById('editorArea');
-  const splitBtn = document.getElementById('splitViewBtn');
-  const singleBtn = document.getElementById('singleViewBtn');
-
-  if (mode === 'split') {
-    area.classList.remove('single-view');
-    splitBtn.classList.add('active');
-    singleBtn.classList.remove('active');
-  } else {
-    area.classList.add('single-view');
-    singleBtn.classList.add('active');
-    splitBtn.classList.remove('active');
-  }
+  document.getElementById('editorArea').classList.toggle('single-view', mode === 'single');
+  document.getElementById('splitViewBtn').classList.toggle('active', mode === 'split');
+  document.getElementById('singleViewBtn').classList.toggle('active', mode === 'single');
 }
 
-// ── EDITOR INPUT ──
 function onEditorInput() {
   updateCharCount();
-  const text = document.getElementById('mainEditor').value.trim();
-  if (versions.length === 0 && text.length > 0) {
-    document.getElementById('runBtn').disabled = false;
-  }
   updateRunBtn();
+  if (versions.length === 0 && document.getElementById('mainEditor').value.trim()) {
+    initText(document.getElementById('mainEditor').value, 'הדבקה ידנית');
+  }
 }
 
 function updateRunBtn() {
-  const hasText = document.getElementById('mainEditor').value.trim().length > 0;
-  document.getElementById('runBtn').disabled = !hasText;
+  document.getElementById('runBtn').disabled = !document.getElementById('mainEditor').value.trim();
 }
 
 function updateCharCount() {
   const text = document.getElementById('mainEditor').value;
   const words = text.trim() ? text.trim().split(/\s+/).length : 0;
-  const chars = text.length;
-  document.getElementById('charCount').textContent = `${words.toLocaleString()} מילים · ${chars.toLocaleString()} תווים`;
-  document.getElementById('rightCharCount').textContent = `${words.toLocaleString()} מילים`;
+  document.getElementById('charCount').textContent = words ? `${words.toLocaleString()} מילים` : '';
+  document.getElementById('rightCharCount').textContent = words ? `${words.toLocaleString()} מילים` : '';
 }
 
-// ── PRESETS ──
 function setPreset(text) {
   document.getElementById('instructionInput').value = text;
   autoResize(document.getElementById('instructionInput'));
   document.getElementById('instructionInput').focus();
 }
 
-function openCustomPreset() {
-  const name = prompt('שם ההוראה:');
-  if (!name) return;
-  const instruction = prompt('תוכן ההוראה:');
-  if (!instruction) return;
-  customPresets.push({ name, instruction });
-  localStorage.setItem('custom_presets', JSON.stringify(customPresets));
-  renderPresets();
-}
-
-function renderPresets() {
-  // Custom presets added dynamically - base presets always shown
-}
-
-// ── EXPORT ──
 function exportDocx() {
   const text = document.getElementById('mainEditor').value;
   if (!text) { showToast('אין טקסט לייצוא', 'error'); return; }
-
-  // Simple RTF export (opens in Word)
-  const rtf = `{\\rtf1\\ansi\\deff0
-{\\fonttbl{\\f0\\froman\\fcharset0 Times New Roman;}}
-{\\f0\\fs24 ${text.replace(/\n/g, '\\par\n').replace(/[\\{}]/g, '\\$&')}}}`;
-
+  const rtf = `{\\rtf1\\ansi\\deff0{\\fonttbl{\\f0\\froman\\fcharset0 Times New Roman;}}{\\f0\\fs24 ${text.replace(/\n/g,'\\par\n').replace(/[\\{}]/g,'\\$&')}}}`;
   download('סיפור.rtf', rtf, 'application/rtf');
-  showToast('קובץ RTF יוצא (נפתח ב-Word)', 'success');
+  showToast('קובץ יוצא בהצלחה (נפתח ב-Word)');
 }
 
 function exportPdf() {
   const text = document.getElementById('mainEditor').value;
   if (!text) { showToast('אין טקסט לייצוא', 'error'); return; }
-
   const win = window.open('', '_blank');
-  win.document.write(`
-    <!DOCTYPE html>
-    <html dir="rtl">
-    <head>
-    <meta charset="UTF-8">
-    <style>
-      body { font-family: 'Times New Roman', serif; font-size: 14pt; line-height: 1.8;
-             margin: 3cm; direction: rtl; color: #111; }
-      pre { white-space: pre-wrap; }
-    </style>
-    </head>
-    <body><pre>${escapeHtml(text)}</pre>
-    <script>window.onload=()=>{window.print();}<\/script>
-    </body></html>
-  `);
+  win.document.write(`<!DOCTYPE html><html dir="rtl"><head><meta charset="UTF-8"><style>body{font-family:'Times New Roman',serif;font-size:14pt;line-height:1.8;margin:3cm;direction:rtl;color:#111}pre{white-space:pre-wrap}</style></head><body><pre>${escapeHtml(text)}</pre><script>window.onload=()=>{window.print()}<\/script></body></html>`);
   win.document.close();
 }
 
 function download(filename, content, type) {
-  const blob = new Blob([content], { type });
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = filename;
+  const a = Object.assign(document.createElement('a'), { href: URL.createObjectURL(new Blob([content], { type })), download: filename });
   a.click();
 }
 
 function updateExportButtons() {
   const show = versions.length > 0;
-  document.getElementById('exportDocxBtn').style.display = show ? 'inline-flex' : 'none';
-  document.getElementById('exportPdfBtn').style.display = show ? 'inline-flex' : 'none';
+  document.getElementById('exportDocxBtn').style.display = show ? '' : 'none';
+  document.getElementById('exportPdfBtn').style.display = show ? '' : 'none';
 }
 
-// ── HELPERS ──
 function setLoading(on) {
   document.getElementById('loadingBar').classList.toggle('active', on);
   document.getElementById('spinner').classList.toggle('active', on);
-  document.getElementById('runBtnText').textContent = on ? 'מעבד...' : '▶ הרץ';
+  document.getElementById('runBtnText').textContent = on ? 'מעבד...' : 'הרץ';
   document.getElementById('runBtn').disabled = on;
 }
 
-function showToast(msg, type = '') {
+function showToast(msg, type = 'success') {
   const t = document.getElementById('toast');
   t.textContent = msg;
-  t.className = `toast ${type}`;
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 3000);
+  t.className = `toast ${type} show`;
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => t.classList.remove('show'), 3000);
 }
 
 function handleInstructionKey(e) {
-  if (e.key === 'Enter' && !e.shiftKey) {
-    e.preventDefault();
-    runInstruction();
-  }
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); runInstruction(); }
 }
 
 function autoResize(el) {
   el.style.height = 'auto';
-  el.style.height = Math.min(el.scrollHeight, 120) + 'px';
+  el.style.height = Math.min(el.scrollHeight, 140) + 'px';
 }
 
 function escapeHtml(str) {
   return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
 
-function updateUI() {
-  updateCharCount();
-  updateRunBtn();
-  renderVersionsList();
-  updateExportButtons();
-}
+function updateUI() { updateCharCount(); updateRunBtn(); renderVersionsList(); updateExportButtons(); }
 
-// API key enter key
-document.getElementById('apiKeyInput')?.addEventListener('keydown', e => {
-  if (e.key === 'Enter') saveApiKey();
-});
+document.getElementById('apiKeyInput')?.addEventListener('keydown', e => { if (e.key === 'Enter') saveApiKey(); });
 </script>
 </body>
 </html>
